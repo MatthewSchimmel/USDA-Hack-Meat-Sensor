@@ -1,3 +1,4 @@
+import os
 from PIL import Image
 from tif_to_png import tif_to_png_converter
 
@@ -66,14 +67,15 @@ def create_image_two(image_path):
     # Display the image
     #img_two.show()
 
-
+def grade(image_path):
+    print()
 # Convert TIF image to PNG
 tif_to_png_converter("image_one.tif")
 
-# Provide the path to the converted PNG image
-input_image_path = "image_one.png"
 
 # Call the function with the input image path
-create_image_two(input_image_path)
+for _, _, files in os.walk("."):
+    for filename in files:
+        create_image_two(filename)
 
 #TODO: this one is working fine. But gotta improve the sensitivity to any red color.
