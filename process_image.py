@@ -38,7 +38,7 @@ def create_image_two(image_path):
     fat_distance_threshold = 5 # Adjust this threshold as needed
     print("--- CHECKPOINT ---")
 
-    # Iterate through each pixel
+# Iterate through each pixel
     for i in range(img.size[0]): # Width
         for j in range(img.size[1]): # Height
             # If the pixel is part of the largest component, set it to red
@@ -50,7 +50,6 @@ def create_image_two(image_path):
                     pixels_two[i, j] = (255, 255, 255) # White
                 else:
                     pixels_two[i, j] = (0, 0, 0) # Black (background)
-
     # Save the resulting image
     img_two.save("image_two.png")
     
