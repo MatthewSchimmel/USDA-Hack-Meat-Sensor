@@ -27,31 +27,36 @@ def create_image_two(image_path):
             else:
                 pixels_two[i, j] = (0, 0, 0)  # Black (non-red pixels)
     
-    # Color the background black [remember, the dimensions are 768x572] & [row, col]
+    # Color the outline black [remember, the dimensions are 768x572] & [row, col]
     for i in range(img.size[0]):  # For all pixels in range (width)
         pixels_two[i, 0] = (0, 150, 0) #the top row
         pixels_two[i, img.size[1] - 1] = (0, 150, 0) # Green
     for i in range(img.size[1]):  # For all pixels in range (width)
         pixels_two[1, i] = (0, 150, 0) #the top row
         pixels_two[img.size[0] - 1, i] = (0, 150, 0) # Green
-    
-    #spread out from there(infect the other cells) DOWN AND RIGHTdirection
-    for i in range(img.size[0] - 1):  # Width
-        for j in range(img.size[1] - 1):  # Height
-            if pixels_two[i, j] == (0, 150, 0): # if the pixel equals green 
-                if pixels_two[i, j + 1] == (0, 0, 0): # if the pixel to the bottom of it is black
-                    pixels_two[i, j + 1] = (0, 150, 0) # set botton pixel to green
-                if pixels_two[i + 1, j] == (0, 0, 0): #if the pixel to the right of it is black
-                    pixels_two[i + 1, j] = (0, 150, 0) # set botton pixel to green
-    
-    #spread out from there(infect the other cells) UP AND LEFT direction
-    for i in range(img.size[0] - 1):  # Width
-        for j in range(img.size[1] - 1):  # Height
-            if pixels_two[i, j] == (0, 150, 0): # if the pixel equals green 
-                if pixels_two[i, j - 1] == (0, 0, 0): # if the pixel above is black
-                    pixels_two[i, j - 1] = (0, 150, 0)
-                if pixels_two[i - 1, j] == (0, 0, 0): #if the pixel to the left of it is black
-                    pixels_two[i - 1, j] = (0, 150, 0)
+    for z in range(3):
+        for i in range(img.size[0]):  # Width
+            for j in range(img.size[1]):  # Height
+                if pixels_two[i, j] == (0, 0, 0): # if the pixel equals black 
+                    #checks the neighboring cells in all eight directions around it for green
+                    if pixels_two[i + 1, j + 1] == (0, 150, 0):
+                        pixels_two[i + 1, j + 1] = (0, 150, 0)
+                    if pixels_two[i + 1, j] == (0, 150, 0):
+                        pixels_two[i + 1, j + 1] = (0, 150, 0)
+                    if pixels_two[i + 1, j - 1] == (0, 150, 0):
+                        pixels_two[i + 1, j + 1] = (0, 150, 0)
+                    if pixels_two[i, j + 1] == (0, 150, 0):
+                        pixels_two[i + 1, j + 1] = (0, 150, 0)
+                    if pixels_two[i, j] == (0, 150, 0):
+                        pixels_two[i + 1, j + 1] = (0, 150, 0)
+                    if pixels_two[i, j - 1] == (0, 150, 0):
+                        pixels_two[i + 1, j + 1] = (0, 150, 0)
+                    if pixels_two[i - 1, j + 1] == (0, 150, 0):
+                        pixels_two[i + 1, j + 1] = (0, 150, 0)
+                    if pixels_two[i - 1, j] == (0, 150, 0):
+                        pixels_two[i + 1, j + 1] = (0, 150, 0)
+                    if pixels_two[i - 1, j - 1] == (0, 150, 0):
+                        pixels_two[i + 1, j + 1] = (0, 150, 0)
 
     # Save the resulting image
     img_two.save("image_two.png")
