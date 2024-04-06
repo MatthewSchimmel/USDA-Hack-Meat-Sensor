@@ -1,3 +1,4 @@
+
 # USDA-Hack-Meat-Sensor
 How we're going to do it:
 1. Convert the image to an HSV file (a set of color values)
