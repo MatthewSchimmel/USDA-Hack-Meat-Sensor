@@ -26,7 +26,8 @@ def create_image_two(image_path):
                 pixels_two[i, j] = (255, 0, 0)  # Red
             else:
                 pixels_two[i, j] = (0, 0, 0)  # Black (non-red pixels)
-    
+    print("Color grading complete")
+
     # Color the outline black [remember, the dimensions are 768x572] & [row, col]
     for i in range(img.size[0]):  # For all pixels in range (width)
         pixels_two[i, 0] = (0, 150, 0) #the top row
@@ -35,34 +36,36 @@ def create_image_two(image_path):
         pixels_two[0, i] = (0, 150, 0) #the leftmost column
         pixels_two[img.size[0] - 1, i] = (0, 150, 0) # the rightmost column
 
-    for i in range(img.size[0] - 1):  # Width
-        for j in range(img.size[1] - 1):  # Height
-            if pixels_two[i, j] == (0, 0, 0): # if the pixel equals black 
-                #checks the neighboring cells in all eight directions around it for green
-                if pixels_two[i + 1, j + 1] == (0, 150, 0):
-                    pixels_two[i, j] = (0, 150, 0)
-                elif pixels_two[i + 1, j] == (0, 150, 0):
-                    pixels_two[i, j] = (0, 150, 0)
-                elif pixels_two[i + 1, j - 1] == (0, 150, 0):
-                    pixels_two[i, j] = (0, 150, 0)
-                elif pixels_two[i, j + 1] == (0, 150, 0):
-                    pixels_two[i, j] = (0, 150, 0)
-                elif pixels_two[i, j] == (0, 150, 0):
-                    pixels_two[i, j] = (0, 150, 0)
-                elif pixels_two[i, j - 1] == (0, 150, 0):
-                    pixels_two[i, j] = (0, 150, 0)
-                elif pixels_two[i - 1, j + 1] == (0, 150, 0):
-                    pixels_two[i, j] = (0, 150, 0)
-                elif pixels_two[i - 1, j] == (0, 150, 0):
-                    pixels_two[i, j] = (0, 150, 0)
-                elif pixels_two[i - 1, j - 1] == (0, 150, 0):
-                    pixels_two[i, j] = (0, 150, 0)
-
+    for x in range(64):#64 iterations should be enough to get decent accuracy
+        for i in range(img.size[0] - 1):  # Width
+            for j in range(img.size[1] - 1):  # Height
+                if pixels_two[i, j] == (0, 0, 0): # if the pixel equals black 
+                    #checks the neighboring cells in all eight directions around it for green
+                    if pixels_two[i + 1, j + 1] == (0, 150, 0):
+                        pixels_two[i, j] = (0, 150, 0)
+                    elif pixels_two[i + 1, j] == (0, 150, 0):
+                        pixels_two[i, j] = (0, 150, 0)
+                    elif pixels_two[i + 1, j - 1] == (0, 150, 0):
+                        pixels_two[i, j] = (0, 150, 0)
+                    elif pixels_two[i, j + 1] == (0, 150, 0):
+                        pixels_two[i, j] = (0, 150, 0)
+                    elif pixels_two[i, j] == (0, 150, 0):
+                        pixels_two[i, j] = (0, 150, 0)
+                    elif pixels_two[i, j - 1] == (0, 150, 0):
+                        pixels_two[i, j] = (0, 150, 0)
+                    elif pixels_two[i - 1, j + 1] == (0, 150, 0):
+                        pixels_two[i, j] = (0, 150, 0)
+                    elif pixels_two[i - 1, j] == (0, 150, 0):
+                        pixels_two[i, j] = (0, 150, 0)
+                    elif pixels_two[i - 1, j - 1] == (0, 150, 0):
+                        pixels_two[i, j] = (0, 150, 0)
+    print("background pixels spread")
     # Save the resulting image
     img_two.save("image_two.png")
-    
+        
     # Display the image
-    img_two.show()
+    #img_two.show()
+
 
 # Convert TIF image to PNG
 tif_to_png_converter("image_one.tif")
