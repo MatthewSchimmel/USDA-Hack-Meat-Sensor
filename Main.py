@@ -1,4 +1,5 @@
 import cv2
+from pathlib import Path
 import numpy as np
 from skimage import measure
 
@@ -6,10 +7,11 @@ from skimage import measure
 def load_and_preprocess_image(image_path):
     # Load the image
     image = cv2.imread(image_path)
-    
+    if image is None:
+        print(f"Failed to load image at {image_path}")
+        return None
     # Convert the image to HSV color space
     hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
-    
     return hsv_image
 
 # Step 3: Define Color Thresholds
@@ -69,6 +71,9 @@ def apply_mask_to_image(image, largest_grouping_mask):
 def main(image_path):
     # Load and preprocess the image
     hsv_image = load_and_preprocess_image(image_path)
+    if hsv_image is None:
+        print("Failed to load or preprocess the image.")
+        return
     
     # Define color thresholds
     background_lower, background_upper, meat_lower, meat_upper, fat_lower, fat_upper = define_color_thresholds()
@@ -88,6 +93,9 @@ def main(image_path):
     cv2.destroyAllWindows()
 
 # Example usage
-if __name__ == "__main__":
-    image_path = 'path_to_your_image.jpg'
-    main(image_path)
+folder_dir  = 'Training Images'
+images = Path(folder_dir).glob('*.png')
+#problem: outputs the string instead of the 
+for image in folder_dir:
+    main(image)
+    print(image)
