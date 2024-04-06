@@ -1,69 +1,63 @@
 from PIL import Image
-import numpy as np
-from sklearn.cluster import KMeans
-from scipy.spatial import KDTree
-
 from tif_to_png import tif_to_png_converter
 
 def create_image_two(image_path):
-    # Open the input image and convert it to a NumPy array
+    # Open the input image
     img = Image.open(image_path)
-    img_array = np.array(img.convert('RGB'))
     
-    # Perform KMeans clustering to identify the largest grouping of red meat pixels
-    kmeans = KMeans(n_clusters=2, random_state=0).fit(img_array.reshape(-1, 3))
-    labels = kmeans.labels_
+    # Create a blank image of the same size
+    img_two = Image.new("RGB", img.size)
     
-    # Reshape labels to match the original shape of img_array
-    labels_reshaped = labels.reshape(img_array.shape[:2])
+    # Load pixel data
+    pixels = img.load()
+    pixels_two = img_two.load()
     
-    # Use the reshaped labels to create a boolean mask for red meat pixels
-    red_meat_mask = labels_reshaped == 0
+    # Threshold for considering a color as red
+    red_threshold = 100  # Adjust this threshold as needed
     
-    # Use the mask to select red meat pixels
-    red_meat_pixels = img_array[red_meat_mask]
+    # Iterate through each pixel
+    for i in range(img.size[0]):  # Width
+        for j in range(img.size[1]):  # Height
+            # Get the RGB values of the pixel
+            r, g, b = pixels[i, j]
+            
+            # If the pixel is similar to red, set it to red
+            if r > red_threshold and g < red_threshold and b < red_threshold:
+                pixels_two[i, j] = (255, 0, 0)  # Red
+            else:
+                pixels_two[i, j] = (0, 0, 0)  # Black (non-red pixels)
     
-    # Convert red_meat_pixels to a 2D array of shape (n, 3) where n is the number of red meat pixels
-    red_meat_pixels_2d = red_meat_pixels.reshape(-1, 3)
+    # Color the background black [remember, the dimensions are 768x572] & [row, col]
+    for i in range(img.size[0]):  # For all pixels in range (width)
+        pixels_two[i, 0] = (0, 150, 0) #the top row
+        pixels_two[i, img.size[1] - 1] = (0, 150, 0) # Green
+    for i in range(img.size[1]):  # For all pixels in range (width)
+        pixels_two[1, i] = (0, 150, 0) #the top row
+        pixels_two[img.size[0] - 1, i] = (0, 150, 0) # Green
+    
+    #spread out from there(infect the other cells) DOWN AND RIGHTdirection
+    for i in range(img.size[0] - 1):  # Width
+        for j in range(img.size[1] - 1):  # Height
+            if pixels_two[i, j] == (0, 150, 0): # if the pixel equals green 
+                if pixels_two[i, j + 1] == (0, 0, 0): # if the pixel to the bottom of it is black
+                    pixels_two[i, j + 1] = (0, 150, 0) # set botton pixel to green
+                if pixels_two[i + 1, j] == (0, 0, 0): #if the pixel to the right of it is black
+                    pixels_two[i + 1, j] = (0, 150, 0) # set botton pixel to green
+    
+    #spread out from there(infect the other cells) UP AND LEFT direction
+    for i in range(img.size[0] - 1):  # Width
+        for j in range(img.size[1] - 1):  # Height
+            if pixels_two[i, j] == (0, 150, 0): # if the pixel equals green 
+                if pixels_two[i, j - 1] == (0, 0, 0): # if the pixel above is black
+                    pixels_two[i, j - 1] = (0, 150, 0)
+                if pixels_two[i - 1, j] == (0, 0, 0): #if the pixel to the left of it is black
+                    pixels_two[i - 1, j] = (0, 150, 0)
 
-    # Build a KDTree from the red meat pixels
-    tree = KDTree(red_meat_pixels_2d)
-
-    # Calculate the distance to the nearest red meat pixel for each pixel in img_array
-    distances, _ = tree.query(img_array.reshape(-1, 3))
-    distances = distances.reshape(img_array.shape[:2])
-    
-    # Calculate the optimal threshold dynamically based on the distribution of distances
-    # For example, you might choose the 90th percentile as the threshold
-    threshold = np.percentile(distances, 90)
-    
-    # Create a mask for pixels close to the red meat area using the dynamic threshold
-    close_to_red_meat_mask = distances < threshold
-    
-    # Create a mask for white pixels
-    white_pixels_mask = np.all(img_array < 100, axis=-1)
-    
-    # Combine the masks to identify intermuscular fat pixels
-    intermuscular_fat_mask = white_pixels_mask & close_to_red_meat_mask
-    
-    # Apply the masks to categorize pixels
-    img_array[intermuscular_fat_mask] = [0, 255, 0] # Green for intermuscular fat
-    img_array[~intermuscular_fat_mask & white_pixels_mask] = [0, 0, 0] # Black for background
-    img_array[~intermuscular_fat_mask & ~white_pixels_mask] = [255, 0, 0] # Red for red meat
-    
-    # Color the background black [remember, the dimensions are 768x572]
-    img_array[1, 0] = [0, 0, 0]
-    img_array[767, 0] = [0, 0, 0]
-    #TODO: spread out from there(infect the other cells)
-
-    # Convert the processed array back to an image
-    img_three = Image.fromarray(img_array)
-    
     # Save the resulting image
-    img_three.save("image_three.png")
+    img_two.save("image_two.png")
     
     # Display the image
-    img_three.show()
+    img_two.show()
 
 # Convert TIF image to PNG
 tif_to_png_converter("image_one.tif")
@@ -73,3 +67,5 @@ input_image_path = "image_one.png"
 
 # Call the function with the input image path
 create_image_two(input_image_path)
+
+#TODO: this one is working fine. But gotta improve the sensitivity to any red color.
