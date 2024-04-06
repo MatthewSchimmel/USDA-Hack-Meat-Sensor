@@ -62,7 +62,8 @@ def create_image_two(image_path):
                         pixels_two[i, j] = (0, 150, 0)
     print("background pixels spread")
     # Save the resulting image
-    img_two.save("image_two.png")
+    filename = "o" + image_path
+    img_two.save(image_path)
         
     # Display the image
     #img_two.show()
@@ -71,7 +72,6 @@ def grade(image_path):
     print()
 # Convert TIF image to PNG
 tif_to_png_converter("image_one.tif")
-
 
 # Call the function with the input image path
 for _, _, files in os.walk("."):
