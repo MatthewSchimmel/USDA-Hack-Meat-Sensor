@@ -1,10 +1,10 @@
 
 # USDA-Hack-Meat-Sensor
 How we're going to do it:
-1. Convert the image to an HSV file (a set of color values)
-2. find the particular color value of each pixel
-3. determine where the whole grouping of red
-4. determine where the white is in the red
+1. Find the largest grouping of red
+2. Find the white within the red
+3. Find the ratio of red to while within the target area
+4. Convert the ratio to a grade
 
 
 ## About the project:
