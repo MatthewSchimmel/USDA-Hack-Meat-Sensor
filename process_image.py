@@ -26,45 +26,45 @@ def create_image_two(image_path):
             if r > red_threshold and g < red_threshold and b < red_threshold:
                 pixels_two[i, j] = (255, 0, 0)  # Red
             else:
-                pixels_two[i, j] = (0, 0, 0)  # Black (non-red pixels)
-    print("Color grading complete")
+                pixels_two[i, j] = (255, 255, 255)  # Green (non-red pixels)
+    print("Two-Tone Color Grading Complete")
 
     # Color the outline black [remember, the dimensions are 768x572] & [row, col]
     for i in range(img.size[0]):  # For all pixels in range (width)
-        pixels_two[i, 0] = (0, 150, 0) #the top row
-        pixels_two[i, img.size[1] - 1] = (0, 150, 0) # the bottom row
+        pixels_two[i, 0] = (0, 0, 0) #the top row
+        pixels_two[i, img.size[1] - 1] = (0, 0, 0) # the bottom row
     for i in range(img.size[1]):  # For all pixels in range (width)
-        pixels_two[0, i] = (0, 150, 0) #the leftmost column
-        pixels_two[img.size[0] - 1, i] = (0, 150, 0) # the rightmost column
+        pixels_two[0, i] = (0, 0, 0) #the leftmost column
+        pixels_two[img.size[0] - 1, i] = (0, 0, 0) # the rightmost column
 
     for x in range(64):#64 iterations should be enough to get decent accuracy
         for i in range(img.size[0] - 1):  # Width
             for j in range(img.size[1] - 1):  # Height
-                if pixels_two[i, j] == (0, 0, 0): # if the pixel equals black 
-                    #checks the neighboring cells in all eight directions around it for green
-                    if pixels_two[i + 1, j + 1] == (0, 150, 0):
-                        pixels_two[i, j] = (0, 150, 0)
-                    elif pixels_two[i + 1, j] == (0, 150, 0):
-                        pixels_two[i, j] = (0, 150, 0)
-                    elif pixels_two[i + 1, j - 1] == (0, 150, 0):
-                        pixels_two[i, j] = (0, 150, 0)
-                    elif pixels_two[i, j + 1] == (0, 150, 0):
-                        pixels_two[i, j] = (0, 150, 0)
-                    elif pixels_two[i, j] == (0, 150, 0):
-                        pixels_two[i, j] = (0, 150, 0)
-                    elif pixels_two[i, j - 1] == (0, 150, 0):
-                        pixels_two[i, j] = (0, 150, 0)
-                    elif pixels_two[i - 1, j + 1] == (0, 150, 0):
-                        pixels_two[i, j] = (0, 150, 0)
-                    elif pixels_two[i - 1, j] == (0, 150, 0):
-                        pixels_two[i, j] = (0, 150, 0)
-                    elif pixels_two[i - 1, j - 1] == (0, 150, 0):
-                        pixels_two[i, j] = (0, 150, 0)
+                if pixels_two[i, j] == (255, 255, 255): # if the pixel equals green 
+                    #checks the neighboring cells in all eight directions around it for black
+                    if pixels_two[i + 1, j + 1] == (0, 0, 0):
+                        pixels_two[i, j] = (0, 0, 0)
+                    elif pixels_two[i + 1, j] == (0, 0, 0):
+                        pixels_two[i, j] = (0, 0, 0)
+                    elif pixels_two[i + 1, j - 1] == (0, 0, 0):
+                        pixels_two[i, j] = (0, 0, 0)
+                    elif pixels_two[i, j + 1] == (0, 0, 0):
+                        pixels_two[i, j] = (0, 0, 0)
+                    elif pixels_two[i, j] == (0, 0, 0):
+                        pixels_two[i, j] = (0, 0, 0)
+                    elif pixels_two[i, j - 1] == (0, 0, 0):
+                        pixels_two[i, j] = (0, 0, 0)
+                    elif pixels_two[i - 1, j + 1] == (0, 0, 0):
+                        pixels_two[i, j] = (0, 0, 0)
+                    elif pixels_two[i - 1, j] == (0, 0, 0):
+                        pixels_two[i, j] = (0, 0, 0)
+                    elif pixels_two[i - 1, j - 1] == (0, 0, 0):
+                        pixels_two[i, j] = (0, 0, 0)
     
-    print("background pixels spread")
+    print("Three-Tone Color Grading Complete")
     # Save the resulting image
-    # filename = "out" + image_path
-    # img_two.save(filename)
+    filename = "out" + image_path
+    img_two.save(filename)
         
     # Display the image
     #img_two.show()
