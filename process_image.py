@@ -62,8 +62,8 @@ def create_image_two(image_path):
                         pixels_two[i, j] = (0, 150, 0)
     print("background pixels spread")
     # Save the resulting image
-    filename = "o" + image_path
-    img_two.save(image_path)
+    filename = "out" + image_path
+    img_two.save(filename)
         
     # Display the image
     #img_two.show()
@@ -71,11 +71,15 @@ def create_image_two(image_path):
 def grade(image_path):
     print()
 # Convert TIF image to PNG
-tif_to_png_converter("image_one.tif")
+tif_to_png_converter("sample1.tif")
+tif_to_png_converter("sample2.tif")
+tif_to_png_converter("sample3.tif")
 
 # Call the function with the input image path
-for _, _, files in os.walk("."):
-    for filename in files:
-        create_image_two(filename)
+# for _, _, files in os.walk("."):
+#     for filename in files:
+create_image_two("sample1.png")
+create_image_two("sample2.png")
+create_image_two("sample3.png")
 
 #TODO: this one is working fine. But gotta improve the sensitivity to any red color.
