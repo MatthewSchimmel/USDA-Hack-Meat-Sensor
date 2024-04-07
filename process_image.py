@@ -21,7 +21,7 @@ def create_image_two(image_path):
         for j in range(img.size[1]):  # Height
             # Get the RGB values of the pixel
             r, g, b = pixels[i, j]
-            
+
             # If the pixel is similar to red, set it to red
             if r > red_threshold and g < red_threshold and b < red_threshold:
                 pixels_two[i, j] = (255, 0, 0)  # Red
@@ -60,26 +60,21 @@ def create_image_two(image_path):
                         pixels_two[i, j] = (0, 150, 0)
                     elif pixels_two[i - 1, j - 1] == (0, 150, 0):
                         pixels_two[i, j] = (0, 150, 0)
+    
     print("background pixels spread")
     # Save the resulting image
-    filename = "out" + image_path
-    img_two.save(filename)
+    # filename = "out" + image_path
+    # img_two.save(filename)
         
     # Display the image
     #img_two.show()
 
-def grade(image_path):
-    print()
+
 # Convert TIF image to PNG
 tif_to_png_converter("sample1.tif")
 tif_to_png_converter("sample2.tif")
 tif_to_png_converter("sample3.tif")
 
-# Call the function with the input image path
-# for _, _, files in os.walk("."):
-#     for filename in files:
 create_image_two("sample1.png")
 create_image_two("sample2.png")
 create_image_two("sample3.png")
-
-#TODO: this one is working fine. But gotta improve the sensitivity to any red color.
